@@ -1,7 +1,7 @@
 function Box2DTester(canvasId) {
 	this._fps = 200;
-	this._velocityIterationsPerSecond = 100;
-	this._positionIterationsPerSecond = 200;
+	this._velocityIterationsPerSecond = 200;
+	this._positionIterationsPerSecond = 300;
 
 	this.initCanvas(canvasId);
 	this.createWorld();
@@ -86,8 +86,7 @@ Box2DTester.prototype = {
 
 	draw: function() {
 		var nextBox2DBody = this._world.m_bodyList;
-
-		while( nextBox2DBody && "EntityID" in nextBox2DBody ) {
+		while( nextBox2DBody ) {
 			if( nextBox2DBody.m_userData == null ) {
 				this.initCAATShapeFromBox2DBody( nextBox2DBody );
 			}
@@ -96,7 +95,7 @@ Box2DTester.prototype = {
 
 			nextBox2DBody.m_userData.setLocation(
 				( newPosition.x - ( nextBox2DBody.w / 2 ) ) * Site.Constants.PHYSICS_SCALE >> 0,
-				( newPosition.y - ( nextBox2DBody.h / 2 ) ) * Site.Constants.PHYSICS_SCALE >> 0
+				( newPosition.y - ( nextBox2DBody.h / 2) ) * Site.Constants.PHYSICS_SCALE >> 0
 			);
 
 			nextBox2DBody.m_userData.setRotation( nextBox2DBody.GetAngle() );
@@ -129,10 +128,10 @@ Box2DTester.prototype = {
 		body.EntityID = nextID;
 		body._color = '#' + CAAT.Color.prototype.hsvToRgb( ( body.EntityID * 15 ) % 360, 40, 99 ).toHex();
 
-		var shape = new b2PolygonShape.AsBox(body.w / 2, body.h / 2);
+		var shape = new b2PolygonShape.AsBox(body.w, body.h);
 
 		var fixtureDef = new b2FixtureDef();
-		fixtureDef.restitution = 0.1;
+		fixtureDef.restitution = 0.5;
 		fixtureDef.density = 1.0;
 		fixtureDef.friction = 0.2;
 		fixtureDef.shape = shape;
@@ -156,14 +155,22 @@ Box2DTester.prototype = {
 	},
 
 	initCAATShapeFromBox2DBody: function( box2DBody ) {
+		console.log( "CAAT:",
+			box2DBody.EntityID,
+			box2DBody.w * Site.Constants.PHYSICS_SCALE,
+			box2DBody.h * Site.Constants.PHYSICS_SCALE,
+			box2DBody.GetPosition().x * Site.Constants.PHYSICS_SCALE,
+			box2DBody.GetPosition().y * Site.Constants.PHYSICS_SCALE
+		);
+
 		box2DBody.m_userData = new CAAT.ShapeActor()
 			.setShape( CAAT.ShapeActor.prototype.SHAPE_RECTANGLE )
 			.create()
 			.setSize(
-				box2DBody.w * Site.Constants.PHYSICS_SCALE,
-				box2DBody.h * Site.Constants.PHYSICS_SCALE
+				box2DBody.w * Site.Constants.PHYSICS_SCALE * 2,
+				box2DBody.h * Site.Constants.PHYSICS_SCALE * 2
 			)
-			.setFillStyle( box2DBody._color );
+			.setFillStyle( box2DBody._color )
 
 		this._scene.addChild( box2DBody.m_userData );
 	}

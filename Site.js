@@ -3,7 +3,7 @@ var Site = {
 	
 	Constants: {
 		PHYSICS_SCALE: 32,
-		BOX_WIDTH: 30,
+		BOX_WIDTH: 10,
 		BOX_COUNT: 100
 	}
 };
