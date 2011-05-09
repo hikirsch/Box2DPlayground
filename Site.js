@@ -30,6 +30,8 @@ Site.Loop = function() {
 				newPosition.y * DemoBox2D.Constants.PHYSICS_SCALE >> 0
 			);
 			
+			nextBox2DBody.m_userData.setRotation( nextBox2DBody.GetAngle() );
+			
 //			console.log( nextBox2DBody.ID, newPosition.x * DemoBox2D.Constants.PHYSICS_SCALE >> 0, newPosition.y * DemoBox2D.Constants.PHYSICS_SCALE >> 0)
 		}
 		nextBox2DBody = nextBox2DBody.m_next;
@@ -83,8 +85,8 @@ Site.InitCaatFromBox2DLoop = function( box2DBody ) {
 			position.y * DemoBox2D.Constants.PHYSICS_SCALE
 		)
 		.setSize(
-			box2DBody.w * DemoBox2D.Constants.PHYSICS_SCALE,
-			box2DBody.h * DemoBox2D.Constants.PHYSICS_SCALE
+			box2DBody.w * DemoBox2D.Constants.PHYSICS_SCALE * 2,
+			box2DBody.h * DemoBox2D.Constants.PHYSICS_SCALE * 2
 		)
 		.setFillStyle( box2DBody._color );
 

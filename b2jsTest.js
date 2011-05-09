@@ -2,7 +2,7 @@ var Box2DTester = function() {
 	this._paused = true;
 	this._fps = 200;
 
-	this._velocityIterationsPerSecond = 300;
+	this._velocityIterationsPerSecond = 100;
 	this._positionIterationsPerSecond = 200;
 	
 	this._world = this.createWorld();
@@ -153,7 +153,7 @@ Box2DTester.prototype.spawn = function(x, y, a) {
 	var shape = new b2PolygonShape.AsBox(body.w, body.h);
 
 	var fixtureDef = new b2FixtureDef();
-	fixtureDef.restitution = 0.0;
+	fixtureDef.restitution = 0.1;
 	fixtureDef.density = 2.0;
 	fixtureDef.friction = 1.0;
 	fixtureDef.shape = shape;
