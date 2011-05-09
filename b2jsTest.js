@@ -12,10 +12,7 @@ var Box2DTester = function() {
 
 Box2DTester.prototype.createBoxes = function() {
 	for(var i = 0; i < 100; i ++) {
-		 this.spawn(
-			 ( ( i  % 5 ) * 25 ) + 150,
-			 0 
-		 );
+		 this.spawn();
 	}
 };
 
@@ -67,12 +64,7 @@ Box2DTester.prototype.createWorld = function(){
 	this._wallBottom.ID = Site.ID++;
 
 	this._wallBottom._color = this._wallLeft._color = this._wallRight._color = "#ff0000";
-//		// TOP
-//		wallBd.position.Set(DemoBox2D.Constants.GAME_WIDTH/2 * DemoBox2D.Constants.PHYSICS_SCALE - 1, 1);
-//		wall.SetAsBox(DemoBox2D.Constants.GAME_WIDTH/2, 1);
-//		this._wallBottom = m_world.CreateBody(wallBd);
-//		this._wallBottom.CreateFixture2(wall)
-	
+
 	return m_world;
 };
 
@@ -136,10 +128,14 @@ Box2DTester.prototype.isPaused = function() {
 	return this._paused;
 };
 
-Box2DTester.prototype.spawn = function(x, y, a) {
+Box2DTester.prototype.spawn = function() {
+	var nextID = Site.ID++;
+	var x = ( Math.sin(nextID) * 40 >> 0 ) + 400;
+	var y = -( nextID * 40 );
+	
 	var bodyDef = new b2BodyDef();
 	bodyDef.type = b2Body.b2_dynamicBody;
-	
+
 	bodyDef.position.Set(
 		x / DemoBox2D.Constants.PHYSICS_SCALE,
 		y / DemoBox2D.Constants.PHYSICS_SCALE
@@ -155,15 +151,14 @@ Box2DTester.prototype.spawn = function(x, y, a) {
 	var fixtureDef = new b2FixtureDef();
 	fixtureDef.restitution = 0.0;
 	fixtureDef.density = 2.0;
-	fixtureDef.friction = 1.0;
+	fixtureDef.friction = 0.2
 	fixtureDef.shape = shape;
 
 	body.CreateFixture(fixtureDef);
-	body.ID = Site.ID++;
+	body.ID = nextID;
 	
 	body._color = '#' + CAAT.Color.prototype.hsvToRgb( ( body.ID * 15 ) % 360, 40, 99 ).toHex();
 
-	
 	return body;
 };
 
